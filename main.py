@@ -112,6 +112,9 @@ def get_code(location):
 
 # 登录
 def login(user, password):
+    # 打印user和password
+    print("user",user)
+    print("password",password)
     is_phone = False
     if re.match(r'\d{11}', user):
         is_phone = True
