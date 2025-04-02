@@ -139,7 +139,7 @@ def login(user, password):
     except:
         return 0, 0
     # print("access_code获取成功！")
-    # print(code)
+    print(code)
 
     url2 = "https://account.huami.com/v2/client/login"
     if is_phone:
@@ -171,11 +171,11 @@ def login(user, password):
         }
     r2 = requests.post(url2, data=data2, headers=headers).json()
     login_token = r2["token_info"]["login_token"]
-    # print("login_token获取成功！")
-    # print(login_token)
+    print("login_token获取成功！")
+    print(login_token)
     userid = r2["token_info"]["user_id"]
-    # print("userid获取成功！")
-    # print(userid)
+    print("userid获取成功！")
+    print(userid)
 
     return login_token, userid
 
@@ -195,6 +195,7 @@ def main(_user, _passwd, min_1, max_1):
         return "login fail!"
 
     t = get_time()
+    print('response',t)
 
     app_token = get_app_token(login_token)
 
@@ -216,19 +217,17 @@ def main(_user, _passwd, min_1, max_1):
     data = f'userid={userid}&last_sync_data_time=1597306380&device_type=0&last_deviceid=DA932FFFFE8816E7&data_json={data_json}'
 
     response = requests.post(url, data=data, headers=head).json()
-    # print(response)
     result = f"[{now}]\n账号：{user[:3]}****{user[7:]}\n修改步数（{step}）[" + response['message'] + "]\n"
     print(result)
     return result
 
 
-# 获取时间戳
+# 获取当前上海时间戳
 def get_time():
-    url = 'http://worldtimeapi.org/api/timezone/Asia/Shanghai'
-    response = requests.get(url, headers=headers).json()
-    t = str(response['unixtime'])+'000'
-    return t
-
+    shanghai_time = datetime.datetime.now() + datetime.timedelta(hours=8)
+    # 转换为时间戳
+    timestamp = int(shanghai_time.timestamp())
+    return timestamp
 
 # 获取app_token
 def get_app_token(login_token):
